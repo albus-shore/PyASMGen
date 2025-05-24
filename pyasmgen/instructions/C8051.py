@@ -1,4 +1,4 @@
-from instructions import Instruction, SourceOperandError, DestinationOperandError, OperandError
+from ..instructions import Instruction, SourceOperandError, DestinationOperandError, OperandError
 from typing import Literal, get_args
 
 ### ============================= Operand Type Defination ============================= ###
