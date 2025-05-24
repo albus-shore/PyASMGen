@@ -1,4 +1,4 @@
-from types import FunctionType
+from types import FunctionType,MethodType
 from functools import wraps
 from ..instructions.C8051 import C8051
 
@@ -35,10 +35,10 @@ class Block(C8051):
         '''The method is defined to exite content manager.'''
         pass
 
-    def _catchable_instruction(self,func:FunctionType) -> FunctionType:
+    def _catchable_instruction(self,func:FunctionType) -> MethodType:
         '''This is a decorator to catch ASM instruction functions' return.'''
         @wraps(func)
-        def warpped_func(*args,**kargs):
-            instruction = func(*args,**kargs)
+        def warpped_func(*args,**kwargs):
+            instruction = func(*args,**kwargs)
             self._instructions.append(instruction)
         return warpped_func
