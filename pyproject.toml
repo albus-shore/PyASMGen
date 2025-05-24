@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyasmgen"
+version = "0.1.0"
+description = "Python-based 8051 Assembly Code Generator."
+authors = [
+    { name="Albus Shore", email="dev@albus-shore.net" }
+]
+license = { text = "MIT" }
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/albus-shore/PyASMGen"
+Repository = "https://github.com/albus-shore/PyASMGen"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pyasmgen*"]
