@@ -1,5 +1,5 @@
 <p align="center">
-<img width="100" src="./assets/logo.png" alt="PyASMGen Logo">
+<img width="175" src="https://raw.githubusercontent.com/albus-shore/PyASMGen/main/assets/logo.png" alt="PyASMGen Logo">
 </p>
 
 ---
@@ -47,10 +47,10 @@ Because:
 
 ## Roadmap
 
+- [X] Syntax correction + semantic hints
 - [ ] Support for interrupts & serial communication
 - [ ] Macros and conditional generation
 - [ ] Auto-commenting of assembly
-- [ ] Syntax correction + semantic hints
 - [ ] HEX file generation & Keil/Proteus integration
 
 ---
@@ -60,8 +60,6 @@ Because:
 ```bash
 pip install pyasmgen
 ```
-
-(Not on PyPI yet — clone the repo for now)
 
 ---
 

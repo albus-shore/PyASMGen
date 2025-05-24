@@ -1,5 +1,5 @@
 <p align="center">
-<img width="100" src="./assets/logo.png" alt="PyASMGen Logo">
+<img width="100" src="https://raw.githubusercontent.com/albus-shore/PyASMGen/main/assets/logo.png" alt="PyASMGen Logo">
 </p>
 
 ---
@@ -51,10 +51,10 @@
 
 ## 计划中功能
 
+- [X] 自动纠错 + 汇编语义检查
 - [ ] 中断与串口通信模块封装
 - [ ] 支持宏定义、条件生成等高级语法
 - [ ] 汇编代码自动注释
-- [ ] 自动纠错 + 汇编语义检查
 - [ ] 和 Keil/Proteus 集成的 HEX 文件生成功能
 
 ---
@@ -64,8 +64,6 @@
 ```bash
 pip install pyasmgen
 ```
-
-（暂未上传 PyPI，也可以直接 clone 本仓库使用）
 
 ---
 
