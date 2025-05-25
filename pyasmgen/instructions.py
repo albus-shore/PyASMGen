@@ -805,7 +805,7 @@ class C8051:
         return Instruction(asm,label,comment,cycle,length,flag)
 
     @staticmethod
-    def clr(operand:A|C|str,
+    def clr(operand:A|C|str|SFRBit,
             label:str=None,comment:str=None) -> Instruction:
         '''The function is defined for working with 'CLR' instruction.
         Args:
@@ -832,7 +832,7 @@ class C8051:
         return Instruction(asm,label,comment,cycle,length,flag)
 
     @staticmethod
-    def cpl(operand:A|C|str,
+    def cpl(operand:A|C|str|SFRBit,
             label:str=None,comment:str=None) -> Instruction:
         '''The function is defined for working with 'CPL' instruction.
         Args:
@@ -1172,7 +1172,7 @@ class C8051:
 
     ## ========================== Bit Operation Instruction ========================== ## 
     @staticmethod
-    def setb(operand:C|str,
+    def setb(operand:C|str|SFRBit,
             label:str=None,comment:str=None) -> Instruction:
         '''The function is defined for working with 'SETB' instruction.
         Args:
