@@ -1,6 +1,6 @@
 from types import FunctionType,MethodType
 from functools import wraps
-from ..instructions.C8051 import C8051
+from ..instructions import C8051
 
 ### ================================= Basic Class ================================= ###
 class Block(C8051):

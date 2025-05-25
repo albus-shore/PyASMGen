@@ -1,4 +1,5 @@
 from warnings import warn
+from .utils.pseudo import Indication
 
 ### ============================== Args Check Functions ============================== ###
 def _address_check(address:str) -> bool:
@@ -18,77 +19,84 @@ class Pseudo:
     '''The class is defined to work with pseudos.'''
 
     @staticmethod
-    def org(address:str) -> str:
+    def org(address:str) -> Indication:
         '''The function is defined for working with 'ORG' pseudo.
         Args:
             address: A string indicates the strat address of following codes.
         Returns:
-            A string indicate the valid 'ORG' pseudo.    
+            An Indication instance indicates the valid 'ORG' pseudo.    
         '''
         if not _address_check(address):
             warn('Abnormal ROM address.',UserWarning)
-        return f'ORG {address}'
-    
-    @staticmethod
-    def end() -> str:
-        '''The function is defined for working with 'END' pseudo.
-        Returns:
-            A string indicate the valid 'END' pseudo.    
-        '''
-        return 'END'
+        asm = f'ORG {address}'
+        return Indication(asm)
 
     @staticmethod
-    def equ(label:str,address:str) -> str:
+    def end() -> Indication:
+        '''The function is defined for working with 'END' pseudo.
+        Returns:
+            An Indication instance indicates the valid 'END' pseudo.    
+        '''
+        asm = 'END'
+        return Indication(asm)
+
+    @staticmethod
+    def equ(label:str,address:str) -> Indication:
         '''The function is defined for working with 'EQU' pseudo.
         Args:
             label: A string indicates the label to define.
             address: A string indicates the strat address of following codes.
         Returns:
-            A string indicate the valid 'EQU' pseudo.    
+            An Indication instance indicates the valid 'EQU' pseudo.    
         '''
         if not _address_check(address):
             warn('Abnormal ROM address.',UserWarning)
-        return f'{label} EQU {address}'
+        asm = f'{label} EQU {address}'
+        return Indication(asm)
 
     @staticmethod
-    def db(*values) -> str:
+    def db(*values) -> Indication:
         '''The function is defined for working with 'DB' pseudo.
         Args:
             values: Some values indicates the values to define in ROM.
         Returns:
-            A string indicate the valid 'DB' pseudo.    
+            An Indication instance indicates the valid 'DB' pseudo.    
         '''
         seperated_values = ','.join(str(value) for value in values)
-        return f'DB {seperated_values}'
+        asm = f'DB {seperated_values}'
+        return Indication(asm)
 
     @staticmethod
-    def dw(*values) -> str:
+    def dw(*values) -> Indication:
         '''The function is defined for working with 'DW' pseudo.
         Args:
             values: Some values indicates the values to define in ROM.
         Returns:
-            A string indicate the valid 'DW' pseudo.    
+            An Indication instance indicates the valid 'DW' pseudo.    
         '''
         seperated_values = ','.join(str(value) for value in values)
-        return f'DW {seperated_values}'
+        asm = f'DW {seperated_values}'
+        return Indication(asm)
 
     @staticmethod
-    def ds(byte:str) -> str:
+    def ds(byte:str) -> Indication:
         '''The function is defined for working with 'DS' pseudo.
         Args:
             byte: A string indicates the number of bytes to keep.
         Returns:
-            A string indicate the valid 'DS' pseudo.    
+            An Indication instance indicates the valid 'DS' pseudo.    
         '''
-        return f'DS {byte}'
+        asm = f'DS {byte}'
+        return Indication(asm)
 
     @staticmethod
-    def bit(label:str,bit:str) -> str:
+    def bit(label:str,bit:str) -> Indication:
         '''The function is defined for working with 'BIT' pseudo.
         Args:
             label: A string indicates the label to define.
             bit: A string indicates the bit signed to the label.
         Returns:
-            A string indicate the valid 'BIT' pseudo.    
+            An Indication instance indicates the valid 'BIT' pseudo.    
         '''
-        return f'{label} BIT {bit}'
+        asm = f'{label} BIT {bit}'
+        return Indication(asm)

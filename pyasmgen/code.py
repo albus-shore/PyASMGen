@@ -1,7 +1,9 @@
 from types import MethodType,FunctionType
 from functools import wraps
+from .utils.block import catchable_block
+from .utils.pseudo import Indication
 from .blocks import Block
-from ..pseudo import Pseudo
+from .pseudos import Pseudo
 
 class ASMCode(Pseudo):
     '''The class is defined to work with ASM instruction blocks and pseudos.'''
@@ -25,7 +27,7 @@ class ASMCode(Pseudo):
         '''The method is defined to enter content manager.'''
         # Overwrite original Block __exit__ method
         self._orgin_block_exit = Block.__exit__
-        Block.__exit__ = self._catchable_block(Block.__exit__)
+        Block.__exit__ = catchable_block(self)(Block.__exit__)
         return self
 
     def __exit__(self,type,instance,traceback):
@@ -43,20 +45,20 @@ class ASMCode(Pseudo):
         label_numbers = []
         asm_numbers = []
         for object in self._asm:
-            if type(object) == str:
-                asm_number = len(object)
+            if isinstance(object,Indication):
+                asm_number = len(object.asm)
                 asm_numbers.append(asm_number)
-            else:
+            elif isinstance(object,Block):
                 for instruction in object._instructions:
-                    asm:str = instruction.asm
-                    label:str = instruction.label
-                    if label != None:
-                        label_number = len(label)
+                    if instruction.label != None:
+                        label_number = len(instruction.label)
                     else:
                         label_number = 0
                     label_numbers.append(label_number)
-                    asm_number = len(asm)
+                    asm_number = len(instruction.asm)
                     asm_numbers.append(asm_number)
+            else:
+                raise RuntimeError("Invalid object in '_instructions' attribute.")        
         pre_label_indent = max(label_numbers) + 1
         pre_asm_indent = max(asm_numbers)
         label_indent = (4 - (pre_label_indent % 4)) + pre_label_indent
@@ -65,33 +67,25 @@ class ASMCode(Pseudo):
         # Make ASM code string
         asm_code = ''
         for object in self._asm:
-            if type(object) == str:
-                asm_code += f'{' ':<{label_indent}}{object}\n'
-            else:
+            if isinstance(object,Indication):
+                asm_code += f'{' ':<{label_indent}}{object.asm}\n'
+            elif isinstance(object,Block):
                 for instruction in object._instructions:
-                    asm = instruction.asm
-                    label:str = instruction.label
-                    comment = instruction.comment
-                    if label != None:
-                        pre_asm = f'{f'{label}:':<{label_indent}}{asm}'
+                    if instruction.label != None:
+                        pre_asm = f'{f'{instruction.label}:':<{label_indent}}'
+                        pre_asm += f'{instruction.asm}'
                     else:
-                        pre_asm = f'{' ':<{label_indent}}{asm}'
-                    if comment != None:
-                        asm_code += f'{pre_asm:<{pre_comment_indent}};{comment}\n'
+                        pre_asm = f'{' ':<{label_indent}}{instruction.asm}'
+                    if instruction.comment != None:
+                        pre_asm_code = f'{pre_asm:<{pre_comment_indent}};'
+                        pre_asm_code += f'{instruction.comment}\n'
+                        asm_code += pre_asm_code
                     else:
                         asm_code += f'{pre_asm:<{pre_comment_indent}}\n'
         # Return ASM code string
         return asm_code
 
     ### ============================= Class Decorator ============================= ###
-    def _catchable_block(self,func:MethodType) -> MethodType:
-        '''This is a decorator to catch instruction block instance.'''
-        @wraps(func)
-        def wrapped_method(object,*args,**kwargs):
-            self._asm.append(object)
-            return func(object,*args,**kwargs)
-        return wrapped_method
-
     def _catchable_pseudo(self,func:FunctionType) -> MethodType:
         '''This is a decorator to catch ASM pseudo functions' return.'''
         @wraps(func)

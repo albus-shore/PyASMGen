@@ -1,1 +1,2 @@
-from .core import ASMCode,Block
+from .code import ASMCode
+from .blocks import Block
