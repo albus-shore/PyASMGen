@@ -7,13 +7,17 @@ from ..instructions import C8051
 ### ================================= Basic Class ================================= ###
 class Block(C8051):
     '''The class is defined to work with a branch of ASM codes.'''
-    def __init__(self,label:str=None):
+    name = 'Basic'
+    ## ============================== Magic Method ============================== ##
+    def __init__(self,label:str=None,org:str=None):
         '''The method is defined to initialize Block class.
         Args:
             label: A string indicates the label of the instruction.
+            org: A string indicates the strat address of following codes.
         '''
         # Get input arguments
         self.label = label
+        self.org = org
         # Overwrite original ASM instructions
         instructions = dir(C8051)
         for name in instructions:
@@ -39,6 +43,8 @@ class Block(C8051):
         '''The method is defined to exite content manager.'''
         # Restore original Block __exit__ method
         Block.__exit__ = self._orgin_block_exit
+        # Support for child class
+        self._additional_codes()
         # Extract nest blocks' instructions
         for object in self._codes:
             if isinstance(object,Instruction):
@@ -50,6 +56,7 @@ class Block(C8051):
                 # Extend the block's instruction attribute
                 self._instructions.extend(object._instructions)
 
+    ## ============================ Method Decorator ============================ ##
     def _catchable_instruction(self,func:FunctionType) -> MethodType:
         '''This is a decorator to catch ASM instruction functions' return.'''
         @wraps(func)
@@ -57,3 +64,8 @@ class Block(C8051):
             instruction = func(*args,**kwargs)
             self._codes.append(instruction)
         return warpped_func
+    
+    ## ============================== Hook Method ============================== ##
+    def _additional_codes(self):
+        '''This is a hook method to append instuctions at the end.'''
+        pass  

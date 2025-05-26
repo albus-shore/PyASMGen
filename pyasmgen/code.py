@@ -36,16 +36,58 @@ class ASMCode(Pseudo):
         '''The method is defined to exite content manager.'''
         # Restore original Block __exit__ method
         Block.__exit__ = self._orgin_block_exit
+        # Append END pseudo
+        self.end()
         # Extract blocks' instructions
         for object in self._codes:
             if isinstance(object,Indication):
                 self._asm.append(object)
             elif isinstance(object,Block):
+                # Append org pseudo if necessary
+                if object.org:
+                    org = super().org(object.org)
+                    self._asm.append(org)
                 # Rewirte first instruction's label if necessary
                 if object.label:
                     object._instructions[0].label = object.label
                 # Extend the block's instruction attribute
                 self._asm.extend(object._instructions)
+                # Jump need block support
+                term = [0,0,0,0,0,0]
+                match object.name:
+                    case 'Initial':
+                        self._asm.insert(0,Block.ljmp(object.label))
+                        self._asm.insert(0,super().org('00H'))
+                        term[0] = 1
+                    case 'EXT0':
+                        index = term[:1].count(1)*2
+                        self._asm.insert(index,Block.ljmp(object.label))
+                        self._asm.insert(index,super().org('03H'))
+                        term[1] = 1
+                    case 'INT0':
+                        index = term[:2].count(1)*2
+                        self._asm.insert(index,Block.ljmp(object.label))
+                        self._asm.insert(index,super().org('0BH'))
+                        term[2] = 1
+                    case 'EXT1':
+                        index = term[:3].count(1)*2
+                        self._asm.insert(index,Block.ljmp(object.label))
+                        self._asm.insert(index,super().org('13H'))
+                        term[3] = 1
+                    case 'INT1':
+                        index = term[:4].count(1)*2
+                        self._asm.insert(index,Block.ljmp(object.label))
+                        self._asm.insert(index,super().org('1BH'))
+                        term[4] = 1
+                    case 'Serial':
+                        index = term[:5].count(1)*2
+                        self._asm.insert(index,Block.ljmp(object.label))
+                        self._asm.insert(index,super().org('23H'))
+                        term[5] = 1
+                    case 'INT2':
+                        index = term[:6].count(1)*2
+                        self._asm.insert(index,Block.ljmp(object.label))
+                        self._asm.insert(index,super().org('2BH'))
 
     ### ============================== Normal Method ============================== ###
     def encode(self) -> str:
