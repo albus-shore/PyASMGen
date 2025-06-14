@@ -48,7 +48,7 @@ Because:
 ## Roadmap
 
 - [X] Syntax correction + semantic hints
-- [ ] Support for interrupts & serial communication
+- [X] Support for interrupts & serial communication
 - [ ] Macros and conditional generation
 - [ ] Auto-commenting of assembly
 - [ ] HEX file generation & Keil/Proteus integration
