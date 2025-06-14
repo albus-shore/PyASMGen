@@ -38,6 +38,8 @@ class ASMCode(Pseudo):
         Block.__exit__ = self._orgin_block_exit
         # Append END pseudo
         self.end()
+        # Jump need block support
+        term = [0,0,0,0,0,0]
         # Extract blocks' instructions
         for object in self._codes:
             if isinstance(object,Indication):
@@ -52,8 +54,6 @@ class ASMCode(Pseudo):
                     object._instructions[0].label = object.label
                 # Extend the block's instruction attribute
                 self._asm.extend(object._instructions)
-                # Jump need block support
-                term = [0,0,0,0,0,0]
                 match object.name:
                     case 'Initial':
                         self._asm.insert(0,Block.ljmp(object.label))
