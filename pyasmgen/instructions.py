@@ -18,7 +18,7 @@ C = Literal['C']
 
 SFRBit = Literal[
     'P0.0','P0.1','P0.2','P0.3','P0.4','P0.5','P0.6','P0.7',
-    'TF1','TF0','IE1','IT1','IE0','IT0',
+    'TF1','TF0','IE1','IT1','IE0','IT0','TR1','TR0',
     'P1.0','P1.1','P1.2','P1.3','P1.4','P1.5','P1.6','P1.7',
     'TI','RI','RB8','TB8','REN','SM2','SM1','SM0',
     'P2.0','P2.1','P2.2','P2.3','P2.4','P2.5','P2.6','P2.7',
@@ -33,7 +33,7 @@ SFRBit = Literal[
 
 ReverseSFRBit = Literal[
     '/P0.0','/P0.1','/P0.2','/P0.3','/P0.4','/P0.5','/P0.6','/P0.7',
-    '/TF1','/TF0','/IE1','/IT1','/IE0','/IT0',
+    '/TF1','/TF0','/IE1','/IT1','/IE0','/IT0','/TR1','/TR0'
     '/P1.0','/P1.1','/P1.2','/P1.3','/P1.4','/P1.5','/P1.6','/P1.7',
     '/TI','/RI','/RB8','/TB8','/REN','/SM2','/SM1','/SM0',
     '/P2.0','/P2.1','/P2.2','/P2.3','/P2.4','/P2.5','/P2.6','/P2.7',
@@ -176,7 +176,7 @@ class C8051:
             if _register_check(src):
                 cycle = 1
                 length = 1
-            elif _direct_address_check(src):
+            elif _direct_address_check(src) or _SFR_check(src):
                 cycle = 1
                 length = 2
             elif _register_indirect_check(src):
