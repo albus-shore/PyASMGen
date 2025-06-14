@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pyasmgen"
-version = "0.1.0"
+version = "0.1.1"
 description = "Python-based 8051 Assembly Code Generator."
 authors = [
     { name="Albus Shore", email="dev@albus-shore.net" }
